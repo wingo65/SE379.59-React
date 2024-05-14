@@ -31,6 +31,11 @@
 nav {
   background-color: #020202;
   padding: 10px;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
   
 }
 
@@ -47,6 +52,21 @@ nav button:hover {
 nav {
   display: flex;
   justify-content: center;
+}
+
+body {
+  background-color: #ffffff; 
+  color: #000000;
+}
+
+.dark-mode {
+  background-color: #333; 
+  color: #ffffff;
+}
+
+.red-mode {
+  background-color: #af0606;
+  color: #000000;
 }
 
 @keyframes App-logo-spin {

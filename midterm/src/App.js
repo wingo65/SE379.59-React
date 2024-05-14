@@ -20,6 +20,7 @@ const App = () => {
   // Define state variables for current page and selected product
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [theme, setTheme] = useState('light');
 
   // Function to navigate to a specific page
   const navigateToPage = (page) => {
@@ -36,22 +37,23 @@ const App = () => {
   };
 
   // Object mapping page names to their components
-  const pageComponents = {
-    home: <HomePage />,
-    products: <ProductsPage products={products} onProductClick={handleProductClick} />,
-    productDetail: <ProductDetailPage product={selectedProduct} onBackClick={() => navigateToPage('products')} />
+  const toggleTheme = (newTheme) => {
+    setTheme(newTheme);
   };
 
   return (
-    <div>
-      {/* Navigation buttons */}
+    <div className={`App ${theme === 'dark' ? 'dark-mode' : theme === 'red' ? 'red-mode' : ''}`}>
       <nav>
         <button onClick={() => navigateToPage('home')}>Home</button>
         <button onClick={() => navigateToPage('products')}>Products</button>
+        <button onClick={() => toggleTheme('light')}>Light Mode</button>
+        <button onClick={() => toggleTheme('dark')}>Dark Mode</button>
+        <button onClick={() => toggleTheme('red')}>Evil Mode</button>
       </nav>
       
-      {/* Render the current page component */}
-      {pageComponents[currentPage]}
+      {currentPage === 'home' && <HomePage />}
+      {currentPage === 'products' && <ProductsPage products={products} onProductClick={handleProductClick} />}
+      {currentPage === 'productDetail' && <ProductDetailPage product={selectedProduct} onBackClick={() => navigateToPage('products')} />}
     </div>
   );
 }
