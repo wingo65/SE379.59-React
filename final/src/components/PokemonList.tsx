@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PokemonFilter from './PokemonFilter';
-import { useFavorites } from './Favorites';
-//our interface
+import { useInventory } from './Inventory'; 
+
 interface Pokemon {
   name: string;
   url: string;
@@ -12,15 +12,16 @@ interface Pokemon {
 }
 
 const PokemonList: React.FC = () => {
-    //hook to manage favorites
-  const { favorites, toggleFavorite } = useFavorites();
-  //2 states to manage pokemon details
+  //Using the useInventory hook to access inventory data and functions
+  const { inventory, toggleInventory } = useInventory(); 
+
+  //State variables for managing Pokemon data and loading state
   const [pokemon, setPokemon] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  //states for filtering 
   const [filteredPokemon, setFilteredPokemon] = useState<Pokemon[]>([]);
   const [selectedType, setSelectedType] = useState<string>('');
-//fetching from API on component
+
+  //Effect to fetch Pokemon data from the API
   useEffect(() => {
     const fetchPokemon = async () => {
       try {
@@ -39,6 +40,7 @@ const PokemonList: React.FC = () => {
         setPokemon(detailedPokemonList);
         setFilteredPokemon(detailedPokemonList);
       } catch (error) {
+        // Handle error
       } finally {
         setLoading(false);
       }
@@ -46,29 +48,32 @@ const PokemonList: React.FC = () => {
 
     fetchPokemon();
   }, []);
-//handle searching and filtering
+
+  //Effect to filter Pokemon based on selected type
   useEffect(() => {
     let filteredList = pokemon;
-    //filtering by type
     if (selectedType !== '') {
       filteredList = filteredList.filter(poke => poke.types && poke.types.includes(selectedType));
     }
-    //updating pokemon list based off search
     setFilteredPokemon(filteredList);
   }, [selectedType, pokemon]);
-  //render list
+
   return (
     <div>
+      {/*Component for filtering Pokemon by type*/}
       <PokemonFilter onFilterChange={setSelectedType} />
-      <ul>
+      {/*Displaying Pokemon grid */}
+      <ul className="pokemon-grid">
         {filteredPokemon.map((poke, index) => (
-          <li key={index}>
-            <Link to={`/pokemon/${poke.name}`}>
+          <li key={index} className="pokemon-item">
+            {/*Link to Pokemon details page*/}
+            <Link to={`/pokemon/${poke.name}`} className="Link-to-Pokemon">
               {poke.name}
               {poke.image && <img src={poke.image} alt={poke.name} />}
             </Link>
-            <button onClick={() => toggleFavorite(poke.name)}>
-              {favorites.includes(poke.name) ? 'Unfavorite' : 'Favorite'}
+            {/*Button to add/remove Pokemon from inventory*/}
+            <button onClick={() => toggleInventory(poke.name)}> 
+              {inventory.includes(poke.name) ? 'Remove from Inventory' : 'Add to Inventory'} 
             </button>
           </li>
         ))}

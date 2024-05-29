@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { FavoritesProvider } from './components/Favorites';
+import {InventoryProvider } from './components/Inventory';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <FavoritesProvider>
+    <InventoryProvider>
       <App />
-    </FavoritesProvider>
+    </InventoryProvider>
   </React.StrictMode>
 );
 

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-//defining the pokemon Type
+//Interface for Pokemon type
 interface Type {
   name: string;
   url: string;
 }
-//the props for filter
+
+//Props interface for the filter component
 interface FilterProps {
-  onFilterChange: (type: string) => void;//callback function to handle change
+  onFilterChange: (type: string) => void;//Callback function to handle filter changes
 }
-//defining pokemon filter component
+//PokemonFilter component
 const PokemonFilter: React.FC<FilterProps> = ({ onFilterChange }) => {
-    //store pokemon types
   const [types, setTypes] = useState<Type[]>([]);
-  //currently selected types
   const [selectedType, setSelectedType] = useState<string>('');
-//fetch types
+
+  //Fetch Pokemon types from the API
   useEffect(() => {
     const fetchTypes = async () => {
       try {
@@ -27,12 +27,13 @@ const PokemonFilter: React.FC<FilterProps> = ({ onFilterChange }) => {
 
     fetchTypes();
   }, []);
-//handle change in type
+
+    //Handler for select change event
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(e.target.value);
     onFilterChange(e.target.value);
   };
-//render
+
   return (
     <div>
       <select value={selectedType} onChange={handleChange}>
